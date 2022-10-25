@@ -15,9 +15,24 @@
         ul {list-style-type: none; margin: 0; padding: 0;}
         ul > li {padding: 0.5rem 1rem;}
         ul > li:nth-child(odd) { background: #dcf8c6; text-align: right; font-style: italic; font-weight: 600;}
+        
     </style>
   </head>
   <body>
+
+    <div class="container mt-4 shadow-lg p3 mb-5 bg-body rounded">
+        <table class="table table-bordered table-striped">
+            <thead>
+              
+                <tr>
+                    <th>COP</th>
+                    <th>USD</th>
+                    <th>TOTAL</th>
+                </tr>
+            </thead>
+        </table>
+
+    </div>
     <ul class="list-group"></ul>
     <form action="">
         <input type="text" class="form-control" placeholder="Ingrese el mensaje">
@@ -48,6 +63,22 @@
           mensajes.appendChild(item)
           window.scrollto(0 ,document.body.scrollHeight)
         })
+
+    </script>
+    <script>
+        var myHeaders = new Headers();
+        myHeaders.append("apikey","nLFRa10gCeQZvto5kM000bMD0onXKjk3");
+
+        var requestOptions = {
+          method: 'GET',
+          redirect: 'follow',
+          headers: myHeaders
+        };
+
+        fetch("https://api.apilayer.com/currency_data/convert?to=usd&from=cop&amount=", requestOptions)
+          .then(response => response.text())
+          .then(result => console.log(result))
+          .catch(error => console.log('error', error))
 
     </script>
 </body>
