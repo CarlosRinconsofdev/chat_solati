@@ -1,16 +1,32 @@
-var express = require('express')
-const bodyParser = require('body-parser')
-var app = express()
-var http = require('http').Server(app)
-var io = require('socket.io')(http)
-//para servir contenido estatico
-app.use(express.static(__dirname))
+const express = require('express')
+const app = express()
 
-//body parser
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended:false}))
+const http = require('http')
+const server = http.createServer(app)
 
-var server = http.listen(3000, ()=>{
-    console.log("servidor corriendo en puerto:",
-    server.address().port)
+const {Server} = require('socket.io')
+const io = new Server(server)
+
+io.on('connection', (socket)=>{
+    /*console.log('Usuario conectado')
+    */
+    /*socket.on('chat', (mensaje)=>{
+        console.log('MSG: '+mensaje)
+    })
+    */
+
+    socket.on('chat', (mensaje) => {
+        io.emit('chat', mensaje)
+    })
+})
+
+
+app.get('/', (req, res)=>{
+    //res.send('<h1>Aplicacion de CHAT</h1>')
+    //console.log(__dirname)
+    res.sendFile(`${__dirname}/cliente/index.html`)    
+})
+
+server.listen(3000, ()=>{
+    console.log('servidor corriendo en http://localhost:3000')
 })
